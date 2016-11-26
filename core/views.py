@@ -44,14 +44,19 @@ def get_data(community, vk_id, token):
 # Create your views here.
 
 def json_resp(data):
-        return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+def error():
+    data = {'result': 'error'}
+    return json_resp(data)
 
 def set_access_token(request):
     token = request.GET.get('token', None)
     vk_id = request.GET.get('owner_id', None)
 
-    token = "02dd253a350b2b6aff570f118db4a44d9a788486980329f286781e06a803d5acda2f80506571efbb808dc"
-    vk_id = '133948748'
+    if token == None or vk == None:
+        token = "02dd253a350b2b6aff570f118db4a44d9a788486980329f286781e06a803d5acda2f80506571efbb808dc"
+        vk_id = '133948748'
 
     community = Community.objects.get_or_create(vk_id=vk_id, token=token)[0]
     t = Thread(target=get_data, args=(community, vk_id, token,))
@@ -64,12 +69,23 @@ def set_access_token(request):
 def get_comments(request):
     owner_id = request.GET.get('owner_id', None)
 
-    c = Community.objects.get(vk_id=owner_id)
+    if owner_id == None:
+        return error()
+
+    try:
+        c = Community.objects.get(vk_id=owner_id)
+    except Community.DoesNotExist as e:
+        return error()
+
     p = Post.objects.filter(community=c)
     result = []
+    if len(p) == 0:
+        return json_resp({'result': result})
+
     for i in p:
         cm = Comment.objects.filter(post=i)
-        if len(cm) != 0:
-            for k in cm:
-                result.append(k.text)
+        if len(cm) == 0:
+            return json_resp({'result': result})
+        for k in cm:
+            result.append(k.text)
     return json_resp(result)
