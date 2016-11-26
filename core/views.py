@@ -54,7 +54,7 @@ def set_access_token(request):
     token = request.GET.get('token', None)
     vk_id = request.GET.get('owner_id', None)
 
-    if token == None or vk == None:
+    if token == None or vk_id == None:
         token = "02dd253a350b2b6aff570f118db4a44d9a788486980329f286781e06a803d5acda2f80506571efbb808dc"
         vk_id = '133948748'
 
@@ -89,3 +89,5 @@ def get_comments(request):
         for k in cm:
             result.append(k.text)
     return json_resp(result)
+
+def set_ban(request):
