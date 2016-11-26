@@ -104,7 +104,7 @@ def redirect(request):
     except Exception as e:
         return error()
 
-    url = 'https://oauth.vk.com/access_token?client_id=5748766&client_secret=TKCRZDIecDW5F3TKy6yY&redirect_uri=https://reunited.tk/api/redirect?group_id=%s&code=%s' % (group_id, code)
+    url = 'https://oauth.vk.com/access_token?client_id=5748766&client_secret=TKCRZDIecDW5F3TKy6yY&redirect_uri=https://reunited.tk/api/redirect/?group_id=%s&code=%s' % (group_id, code)
     r = requests.get(url)
     token = json.loads(r.text)['access_token']
     print token
