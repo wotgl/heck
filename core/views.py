@@ -6,6 +6,7 @@ from models import *
 import time
 from threading import Thread
 import requests
+import random
 from django.http import HttpResponseRedirect
 
 
@@ -73,6 +74,7 @@ def set_access_token(request):
     response_data['result'] = 'Ok'
     return json_resp(response_data)
 
+
 def get_comments(request):
     owner_id = request.GET.get('owner_id', None)
 
@@ -122,3 +124,27 @@ def redirect(request):
     response_data = {}
     response_data['result'] = 'Ok'
     return json_resp(response_data)
+
+def get_comments_admin(request):
+    group_id = request.GET.get('group_id', None)
+
+    if group_id == None:
+        return error()
+
+    try:
+        c = Community.objects.get(vk_id=group_id)
+    except Community.DoesNotExist as e:
+        return error()
+
+    p = Post.objects.filter(community=c)
+    result = []
+    if len(p) == 0:
+        return json_resp({'result': result})
+
+    for i in p:
+        cm = Comment.objects.filter(post=i)
+        if len(cm) == 0:
+            return json_resp({'result': result})
+        for k in cm:
+            result.append({'id': k.cid, 'text': k.text, 'score': random.random()})
+    return json_resp(result)
