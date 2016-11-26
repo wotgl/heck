@@ -91,3 +91,4 @@ def get_comments(request):
     return json_resp(result)
 
 def set_ban(request):
+    pass
