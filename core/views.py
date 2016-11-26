@@ -6,6 +6,8 @@ from models import *
 import time
 from threading import Thread
 import requests
+from django.http import HttpResponseRedirect
+
 
 
 def get_comments(vk_id, token, post_id):
@@ -95,5 +97,20 @@ def get_comments(request):
             result.append(k.text)
     return json_resp(result)
 
-def set_ban(request):
-    pass
+def redirect(request):
+    try:
+        code = request.GET.get('code', None)
+        group_id = request.GET.get('group_id', None)
+    except Exception as e:
+        return error()
+
+    url = 'https://oauth.vk.com/access_token?client_id=5748766&client_secret=TKCRZDIecDW5F3TKy6yY&redirect_uri=https://reunited.tk/api/redirect?group_id=%s&code=%s' % (group_id, code)
+    r = requests.get(url)
+    token = json.loads(r.text)['access_token']
+    print token
+
+    community = Community.objects.get_or_create(vk_id=group_id, token=token)[0]
+    t = Thread(target=get_data, args=(community, vk_id, token,))
+    t.start()
+
+    return HttpResponseRedirect('http://yandex.ru/')
