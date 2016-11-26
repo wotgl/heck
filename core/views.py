@@ -18,7 +18,12 @@ def get_data(community, vk_id, token):
         url = 'https://api.vk.com/method/wall.get?access_token=%s&owner_id=-%s&count=10' % (token, vk_id)
         r = requests.get(url)
         data = json.loads(r.text)
-        data = data['response'][1:]
+        try:
+            data = data['response'][1:]
+        except Exception as e:
+            print e
+            print data
+            return
         for i in data:
             post = ''
             try:
