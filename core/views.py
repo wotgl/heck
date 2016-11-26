@@ -54,9 +54,11 @@ def get_data(community, vk_id, token):
 def json_resp(data):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+
 def error():
     data = {'result': 'error'}
     return json_resp(data)
+
 
 def set_access_token(request):
     token = request.GET.get('token', None)
@@ -99,6 +101,7 @@ def get_comments(request):
             result.append(k.text)
     return json_resp(result)
 
+
 def redirect(request):
     try:
         code = request.GET.get('code', None)
@@ -125,6 +128,7 @@ def redirect(request):
     response_data['result'] = 'OK'
     return json_resp(response_data)
 
+
 def get_comments_admin(request):
     group_id = request.GET.get('group_id', None)
 
@@ -148,6 +152,7 @@ def get_comments_admin(request):
         for k in cm:
             result.append({'id': k.cid, 'text': k.text, 'score': random.random()})
     return json_resp(result)
+
 
 def check_group(request):
     group_id = request.GET.get('group_id', None)
