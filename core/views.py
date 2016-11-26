@@ -110,7 +110,7 @@ def redirect(request):
     print token
 
     community = Community.objects.get_or_create(vk_id=group_id, token=token)[0]
-    t = Thread(target=get_data, args=(community, vk_id, token,))
+    t = Thread(target=get_data, args=(community, group_id, token,))
     t.start()
 
     return HttpResponseRedirect('http://yandex.ru/')
