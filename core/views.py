@@ -122,7 +122,7 @@ def redirect(request):
     t.start()
 
     response_data = {}
-    response_data['result'] = 'Ok'
+    response_data['result'] = 'OK'
     return json_resp(response_data)
 
 def get_comments_admin(request):
@@ -148,3 +148,19 @@ def get_comments_admin(request):
         for k in cm:
             result.append({'id': k.cid, 'text': k.text, 'score': random.random()})
     return json_resp(result)
+
+def check_group(request):
+    group_id = request.GET.get('group_id', None)
+
+    if group_id == None:
+        return error()
+
+    try:
+        c = Community.objects.get(vk_id=group_id)
+        response_data = {}
+        response_data['result'] = 'OK'
+        return json_resp(response_data)
+    except Community.DoesNotExist as e:
+        response_data = {}
+        response_data['result'] = 'NOT OK'
+        return json_resp(response_data)
