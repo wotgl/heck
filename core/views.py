@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 
 
 
-def get_comments(vk_id, token, post_id):
+def _get_comments(vk_id, token, post_id):
     url = 'https://api.vk.com/method/wall.getComments?access_token=%s&owner_id=-%s&post_id=%s&count=10' % (token, vk_id, post_id)
     r = requests.get(url)
     return json.loads(r.text)
@@ -36,7 +36,7 @@ def get_data(community, vk_id, token):
             if i['comments']['count'] == '0':
                 continue
             # get_comments
-            comments = get_comments(vk_id, token, i['id'])
+            comments = _get_comments(vk_id, token, i['id'])
             for j in comments['response'][1:]:
                 try:
                     Comment.objects.get(cid=j['cid'])
