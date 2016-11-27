@@ -168,7 +168,7 @@ def get_comments_admin(request):
         print url
         r = requests.get(url)
         for k in json.loads(r.text)['response']:
-            avatars[k['uid']] = k['photo_50']
+            avatars[k['uid']] = k['photo_100']
         
         for k in cm:
             result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[int(k.user.uid)]})
