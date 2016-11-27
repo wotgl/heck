@@ -84,13 +84,13 @@ def set_access_token(request):
 
 
 def get_comments(request):
-    owner_id = request.GET.get('owner_id', None)
+    group_id = request.GET.get('group_id', None)
 
-    if owner_id == None:
+    if group_id == None:
         return error()
 
     try:
-        c = Community.objects.get(vk_id=owner_id)
+        c = Community.objects.get(vk_id=group_id)
     except Community.DoesNotExist as e:
         return error()
 
