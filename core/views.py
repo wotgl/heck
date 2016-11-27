@@ -239,6 +239,7 @@ def fetch_result(request):
     length = len(data)
     counter = 0
     boundary = 0.5
+    print data
     for i in data:
         ptr = re.compile('res\[(\d+)\]')
         _id = ptr.findall(i)[0]
