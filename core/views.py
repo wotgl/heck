@@ -161,7 +161,7 @@ def get_comments_admin(request):
         if len(cm) == 0:
             return json_resp({'result': result})
         for k in cm:
-            result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid})
+            result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid, 'pid': k.post.pid})
     return json_resp(result)
 
 
