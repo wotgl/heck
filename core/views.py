@@ -7,6 +7,7 @@ import time
 from threading import Thread
 import requests
 import random
+import re
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
@@ -231,8 +232,25 @@ def ban_user(request):
 
 @csrf_exempt
 def fetch_result(request):
-    print request.POST
+    data = request.GET
+    # print data
+    length = len(data)
+    counter = 0
+    boundary = 0.5
+    for i in data:
+        ptr = re.compile('res\[(\d+)\]')
+        _id = ptr.findall(i)[0]
+        res = data[i]
+
+        c = Comment.objects.get(cid=_id)
+        d = requests.get('http://127.0.0.1:5000/?data=' + c.text)
+        if int(d.text) > boundary and res == 'spam':
+            counter += 1
+        elif int(d.text) <= boundary and res == 'ham':
+            counter += 1
+
+
 
     response_data = {}
-    response_data['result'] = 'Ok'
+    response_data['result'] = str(counter) + '/' + length
     return json_resp(response_data)
