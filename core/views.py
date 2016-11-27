@@ -159,8 +159,10 @@ def get_comments_admin(request):
     if len(p) == 0:
         return json_resp({'result': result})
 
+    print len(p)
     for i in p:
         cm = Comment.objects.filter(post=i)
+        print len(cm)
         if len(cm) == 0:
             return json_resp({'result': result})
         avatars = {}
