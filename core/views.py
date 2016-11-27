@@ -106,7 +106,8 @@ def get_comments(request):
     for i in p:
         cm = Comment.objects.filter(post=i)
         if len(cm) == 0:
-            return json_resp({'result': result})
+            continue
+            # return json_resp({'result': result})
         for k in cm:
             result.append({'text': k.text, 'cid': k.cid})
     # result = random.shuffle(result)
