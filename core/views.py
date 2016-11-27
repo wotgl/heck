@@ -182,6 +182,7 @@ def get_comments_admin(request):
             result.append({'id': k.cid, 'text': k.text, 'score': d.text, 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[int(k.user.uid)]})
 
     newlist = sorted(result, key=lambda k: k['score'])
+    newlist = newlist[::-1]
     return json_resp(result)
 
 
