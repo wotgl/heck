@@ -194,7 +194,7 @@ def ban_user(request):
 
     c.banned.add(user)
 
-    url = 'https://api.vk.com/method/groups.banUser?reason=1&access_token=%s&group_id=-%s&user_id=%s' % (token, group_id, uid)
+    url = 'https://api.vk.com/method/groups.banUser?reason=1&access_token=%s&group_id=-%s&user_id=%s' % (с.token, group_id, uid)
     r = requests.get(url)
     print r.text
 
