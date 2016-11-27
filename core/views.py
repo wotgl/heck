@@ -171,7 +171,8 @@ def get_comments_admin(request):
             avatars[k['uid']] = k['photo_100']
         
         for k in cm:
-            result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[int(k.user.uid)]})
+            d = requests.get('http://127.0.0.1:5000/?data=' + k.text)
+            result.append({'id': k.cid, 'text': k.text, 'score': d.text, 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[int(k.user.uid)]})
     return json_resp(result)
 
 
