@@ -196,7 +196,8 @@ def ban_user(request):
 
     url = 'https://api.vk.com/method/groups.banUser?reason=1&access_token=%s&group_id=-%s&user_id=%s' % (token, group_id, uid)
     r = requests.get(url)
-    
+    print r.text
+
     response_data = {}
     response_data['result'] = 'Ok'
     return json_resp(response_data)
