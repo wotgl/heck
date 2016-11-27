@@ -104,7 +104,7 @@ def get_comments(request):
         if len(cm) == 0:
             return json_resp({'result': result})
         for k in cm:
-            result.append(k.text)
+            result.append({'text': k.text, 'cid': k.cid})
     return json_resp(result)
 
 
