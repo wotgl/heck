@@ -252,5 +252,5 @@ def fetch_result(request):
 
 
     response_data = {}
-    response_data['result'] = str(counter) + '/' + length
+    response_data['result'] = str(counter) + '/' + str(length)
     return json_resp(response_data)
