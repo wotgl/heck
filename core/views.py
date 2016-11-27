@@ -180,6 +180,8 @@ def get_comments_admin(request):
         for k in cm:
             d = requests.get('http://127.0.0.1:5000/?data=' + k.text)
             result.append({'id': k.cid, 'text': k.text, 'score': d.text, 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[int(k.user.uid)]})
+
+    newlist = sorted(result, key=lambda k: k['score'])
     return json_resp(result)
 
 
