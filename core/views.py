@@ -160,19 +160,17 @@ def get_comments_admin(request):
         cm = Comment.objects.filter(post=i)
         if len(cm) == 0:
             return json_resp({'result': result})
-        avatars = []
+        avatars = {}
         avatars_ids = ''
         for k in cm:
             avatars_ids += k.user.uid + ","
         url = 'https://api.vk.com/method/users.get?user_ids=%s&fields=photo_50' % (avatars_ids)
         r = requests.get(url)
         for k in json.loads(r.text)['response']:
-            avatars.append(k['photo_50'])
+            avatars[k['id']] = k['photo_50']
         
-        counter = 0
         for k in cm:
-            result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[counter]})
-            counter += 1
+            result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid, 'pid': k.post.pid, 'photo': avatars[k.cid]})
     return json_resp(result)
 
 
