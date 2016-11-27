@@ -125,7 +125,11 @@ def redirect(request):
     url = 'https://oauth.vk.com/access_token?client_id=5748766&client_secret=TKCRZDIecDW5F3TKy6yY&redirect_uri=https://reunited.tk/api/redirect/?group_id=%s&code=%s' % (group_id, code)
     r = requests.get(url)
     print r.text
-    token = json.loads(r.text)['access_token_' + group_id]
+    token = ''
+    try:
+        token = json.loads(r.text)['access_token_' + group_id]
+    except Exception as e:
+        token = json.loads(r.text)['access_token']
     print token
     community = Community.objects.create(vk_id=group_id, token=token)
     t = Thread(target=get_data, args=(community, group_id, token,))
