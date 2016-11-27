@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^get_comments/$', views.get_comments),
     url(r'^redirect/$', views.redirect),
     url(r'^get_comments_admin/$', views.get_comments_admin)
+    url(r'^ban_user/$', views.ban_user)
 ]
