@@ -164,8 +164,8 @@ def get_comments_admin(request):
         avatars_ids = ''
         for k in cm:
             avatars_ids += k.user.uid + ","
-        print url
         url = 'https://api.vk.com/method/users.get?user_ids=%s&fields=photo_50' % (avatars_ids)
+        print url
         r = requests.get(url)
         for k in json.loads(r.text)['response']:
             avatars[k['id']] = k['photo_50']
