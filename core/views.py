@@ -161,6 +161,7 @@ def get_comments_admin(request):
 
     print len(p)
     for i in p:
+        print i
         cm = Comment.objects.filter(post=i)
         print len(cm)
         if len(cm) == 0:
