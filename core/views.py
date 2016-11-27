@@ -8,17 +8,19 @@ from threading import Thread
 import requests
 import random
 from django.http import HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 
 def _get_comments(vk_id, token, post_id):
-    url = 'https://api.vk.com/method/wall.getComments?access_token=%s&owner_id=-%s&post_id=%s&count=10' % (token, vk_id, post_id)
+    url = 'https://api.vk.com/method/wall.getComments?access_token=%s&owner_id=-%s&post_id=%s&count=100' % (token, vk_id, post_id)
     r = requests.get(url)
     return json.loads(r.text)
 
 def get_data(community, vk_id, token):
     while True:
-        url = 'https://api.vk.com/method/wall.get?access_token=%s&owner_id=-%s&count=10' % (token, vk_id)
+        url = 'https://api.vk.com/method/wall.get?access_token=%s&owner_id=-%s&count=100' % (token, vk_id)
         r = requests.get(url)
         data = json.loads(r.text)
         try:
@@ -213,6 +215,15 @@ def ban_user(request):
     url = 'https://api.vk.com/method/groups.banUser?reason=1&access_token=%s&group_id=-%s&user_id=%s' % (c.token, group_id, uid)
     r = requests.get(url)
     print r.text
+
+    response_data = {}
+    response_data['result'] = 'Ok'
+    return json_resp(response_data)
+
+
+@csrf_exempt
+def fetch_result(request):
+    print request.Post
 
     response_data = {}
     response_data['result'] = 'Ok'
