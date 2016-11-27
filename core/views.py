@@ -249,9 +249,9 @@ def fetch_result(request):
         d = requests.get('http://127.0.0.1:5000/?data=' + c.text)
         print d.text
         print res
-        if float(d.text) > boundary and res == 'ham':
+        if float(d.text) > boundary and res == 'spam':
             counter += 1
-        elif float(d.text) <= boundary and res == 'spam':
+        elif float(d.text) <= boundary and res == 'ham':
             counter += 1
 
 
