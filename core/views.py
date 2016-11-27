@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 def _get_comments(vk_id, token, post_id):
     url = 'https://api.vk.com/method/wall.getComments?access_token=%s&owner_id=-%s&post_id=%s&count=100' % (token, vk_id, post_id)
     r = requests.get(url)
+    time.sleep(0.5)
     return json.loads(r.text)
 
 def get_data(community, vk_id, token):
