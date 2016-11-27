@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 
 class VkUser(models.Model):
-    vk_id = models.CharField(max_length=100)
+    uid = models.CharField(max_length=100)
 
 class Community(models.Model):
     vk_id = models.CharField(max_length=100, unique=True)
@@ -25,3 +25,4 @@ class Comment(models.Model):
     cid = models.CharField(max_length=100, unique=True)
     text = models.TextField()
     post = models.ForeignKey(Post)
+    user = models.ForeignKey(VkUser)

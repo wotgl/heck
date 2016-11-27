@@ -42,7 +42,13 @@ def get_data(community, vk_id, token):
                 try:
                     Comment.objects.get(cid=j['cid'])
                 except Comment.DoesNotExist as e:
-                    comment = Comment.objects.create(cid=j['cid'], post=post, text=j['text'])
+                    uid = j['uid']
+                    user = ''
+                    try:
+                        user = VkUser.objects.get(uid=uid)
+                    except VkUser.DoesNotExist as e:
+                        user = VkUser.objects.create(uid=uid)
+                    comment = Comment.objects.create(cid=j['cid'], post=post, text=j['text'], user=user)
         time.sleep(5)
 
 
@@ -150,7 +156,7 @@ def get_comments_admin(request):
         if len(cm) == 0:
             return json_resp({'result': result})
         for k in cm:
-            result.append({'id': k.cid, 'text': k.text, 'score': random.random()})
+            result.append({'id': k.cid, 'text': k.text, 'score': random.random(), 'uid': k.user.uid})
     return json_resp(result)
 
 
@@ -169,3 +175,12 @@ def check_group(request):
         response_data = {}
         response_data['result'] = 'NOT OK'
         return json_resp(response_data)
+
+def ban_user(request):
+    group_id = request.GET.get('group_id', None)
+    user_id = request.GET.get('user_id', None)
+
+    try:
+        c = Community.objects.get(vk_id=group_id)
+    except Community.DoesNotExist as e:
+        return error()
