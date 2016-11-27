@@ -246,6 +246,7 @@ def fetch_result(request):
 
         c = Comment.objects.get(cid=_id)
         d = requests.get('http://127.0.0.1:5000/?data=' + c.text)
+        print d.text
         if float(d.text) > boundary and res == 'spam':
             counter += 1
         elif float(d.text) <= boundary and res == 'ham':
