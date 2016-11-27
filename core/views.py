@@ -178,9 +178,25 @@ def check_group(request):
 
 def ban_user(request):
     group_id = request.GET.get('group_id', None)
-    user_id = request.GET.get('user_id', None)
+    uid = request.GET.get('uid', None)
 
+    c = ''
+    user = ''
     try:
         c = Community.objects.get(vk_id=group_id)
     except Community.DoesNotExist as e:
         return error()
+
+    try:
+        user = VkUser.objects.get(uid=uid)
+    except VkUser.DoesNotExist as e:
+        return error()
+
+    c.banned.add(user)
+
+    url = 'https://api.vk.com/method/groups.banUser?reason=1&access_token=%s&group_id=-%s&user_id=%s' % (token, group_id, uid)
+    r = requests.get(url)
+    
+    response_data = {}
+    response_data['result'] = 'Ok'
+    return json_resp(response_data)
