@@ -110,7 +110,7 @@ def get_comments(request):
             # return json_resp({'result': result})
         for k in cm:
             result.append({'text': k.text, 'cid': k.cid})
-    # result = random.shuffle(result)
+    result = random.shuffle(result)
     return json_resp(result)
 
 
