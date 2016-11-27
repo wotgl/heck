@@ -228,7 +228,7 @@ def ban_user(request):
 
 @csrf_exempt
 def fetch_result(request):
-    print request.Post
+    print request.POST
 
     response_data = {}
     response_data['result'] = 'Ok'
